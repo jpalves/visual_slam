@@ -64,12 +64,12 @@ sensor_msgs::msg::PointCloud2 RgbdSlamNode::mappoint_to_pointcloud(std::vector<O
 
 void RgbdSlamNode::publish_odometry(const Sophus::SE3f& Tcw_SE3f, const rclcpp::Time& msg_time){
     cv::Mat Tcw;
-	Eigen::Matrix4f TcwE3f = Tcw_SE3f.matrix();
-	cv::eigen2cv(TcwE3f, Tcw);
-	tf2::Transform tf_transform = TransformFromMat(Tcw);
-	nav_msgs::msg::Odometry odom_msg;
+    Eigen::Matrix4f TcwE3f = Tcw_SE3f.matrix();
+    cv::eigen2cv(TcwE3f, Tcw);
+    tf2::Transform tf_transform = TransformFromMat(Tcw);
+    nav_msgs::msg::Odometry odom_msg;
     		
-	odom_msg.header.stamp = msg_time;
+    odom_msg.header.stamp = msg_time;
     odom_msg.header.frame_id = "odom"; 
     odom_msg.child_frame_id = "base_footprint";
 
@@ -129,9 +129,9 @@ tf2::Transform RgbdSlamNode::TransformFromMat(cv::Mat position_mat) {
                                         translation.at<float> (2));
 
     		//Coordinate transformation matrix from orb coordinate system to ros coordinate system
-    const tf2::Matrix3x3 tf_orb_to_ros (0,  0, 1,
-                                	   -1,  0, 0,
-                                        0, -1, 0);
+    const tf2::Matrix3x3 tf_orb_to_ros ( 0,  0, 1,
+                                	-1,  0, 0,
+                                         0, -1, 0);
 
     		//Transform from orb coordinate system to ros coordinate system on camera coordinates
     tf_camera_rotation = tf_orb_to_ros * tf_camera_rotation;
